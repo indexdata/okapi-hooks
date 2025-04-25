@@ -75,10 +75,19 @@ prepare() {
 		echo "MD_URL not set"
 		fail=true
 	fi
+	if ! which curl > /dev/null; then
+		echo "curl not found"
+		fail=true
+	fi
+	if ! which jq > /dev/null; then
+		echo "jq not found"
+		fail=true
+	fi
 	if $fail; then
 		echo "Exiting"
 		exit 1
 	fi
+
 	SVCID=`echo $OKAPI_MD | jq -r '.id'`
 	INSTID=inst-${SVCID}
 	OKAPI_TENANTS=$(echo "$OKAPI_TENANTS" | tr ',' ' ')
