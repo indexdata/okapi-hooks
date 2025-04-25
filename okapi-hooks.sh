@@ -4,8 +4,8 @@ set -e # exit on error
 set -x # echo commands
 
 call_curl() {
-	if test -z "CURL_TOK"; then
-		curl -w '\n' -s $CURL_TOK $*
+	if test -z "${CURL_TOK}"; then
+		curl -w '\n' -s ${CURL_TOK} $*
 	else
 		curl -w '\n' -s $*
 	fi
@@ -20,10 +20,10 @@ delete() {
 }
 
 login() {
-	if test $OKAPI_TOKEN = none; then
+	if test "${OKAPI_TOKEN}" = none; then
 		return
 	fi
-	if test -z "$OKAPI_TOKEN"; then
+	if test -z "${OKAPI_TOKEN}"; then
 		if test -z "$OKAPI_USER" -o "$OKAPI_PASS"; then
 			echo "No OKAPI_TOKEN; OKAPI_USER and OKAPI_PASS required"
 			exit 1
