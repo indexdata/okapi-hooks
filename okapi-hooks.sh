@@ -37,21 +37,17 @@ login() {
 # TODO: handle that previous instance is a different version
 hook_pre_delete() {
 	for T in $OKAPI_TENANTS; do
-		echo "[{ \"id\": \"${SVCID}\", \"action\": \"disable\" }]" >install.json
-		post -d @install.json $U/_/proxy/tenants/$T/install
+		echo "[{\"id\":\"${SVCID}\",\"action\":\"disable\"}]" | post -d @- $U/_/proxy/tenants/$T/install
 	done
 	delete "$U/_/discovery/modules/${SVCID}/${INSTID}"
 	delete "$U/_/proxy/modules/${SVCID}"
 }
 
 hook_post_install() {
-	echo $OKAPI_MD | post -d @- $U/_/proxy/modules
-	echo "{ \"srvcId\": \"$SVCID\", \"instId\": \"${INSTID}\", \"url\": \"${MD_URL}\" }" >discovery.json
-	post -f -d @discovery.json $U/_/discovery/modules
-
+	echo $OKAPI_MD | post -f -d @- $U/_/proxy/modules
+	echo "{\"srvcId\":\"$SVCID\",\"instId\":\"${INSTID}\",\"url\":\"${MD_URL}\"}" | post -f -d @- $U/_/discovery/modules
 	for T in $OKAPI_TENANTS; do
-		echo "[{ \"id\": \"${SVCID}\", \"action\": \"enable\" }]" >install.json
-		post -f -d @install.json $U/_/proxy/tenants/$T/install
+		echo "[{ \"id\":\"${SVCID}\",\"action\":\"enable\"}]" | post -f -d @- $U/_/proxy/tenants/$T/install
 	done
 }
 
@@ -87,7 +83,6 @@ prepare() {
 		echo "Exiting"
 		exit 1
 	fi
-
 	SVCID=`echo $OKAPI_MD | jq -r '.id'`
 	INSTID=inst-${SVCID}
 	OKAPI_TENANTS=$(echo "$OKAPI_TENANTS" | tr ',' ' ')
