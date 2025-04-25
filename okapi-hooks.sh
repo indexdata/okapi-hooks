@@ -24,7 +24,7 @@ login() {
 		return
 	fi
 	if test -z "${OKAPI_TOKEN}"; then
-		if test -z "$OKAPI_USER" -o "$OKAPI_PASS"; then
+		if test -z "$OKAPI_USER" -o -z "$OKAPI_PASS"; then
 			echo "No OKAPI_TOKEN; OKAPI_USER and OKAPI_PASS required"
 			exit 1
 		fi
