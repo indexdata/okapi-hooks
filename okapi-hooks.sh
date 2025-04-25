@@ -28,8 +28,9 @@ login() {
 			echo "No OKAPI_TOKEN; OKAPI_USER and OKAPI_PASS required"
 			exit 1
 		fi
-		post -f -d"{\"username\":\"${OKAPI_USER}\",\"password\":\"${OKAPI_PASS}\"}" $U/authn/login
-		OKAPI_TOKEN=`awk '/x-okapi-token/ {print $2}' <headers|tr -d '[:space:]'`
+		tmp=`mktemp`
+		post -f -D$tmp -d"{\"username\":\"${OKAPI_USER}\",\"password\":\"${OKAPI_PASS}\"}" $U/authn/login
+		OKAPI_TOKEN=`awk '/x-okapi-token/ {print $2}' < $tmp|tr -d '[:space:]'`
 	fi
 	CURL_TOK="-HX-Okapi-Token:${OKAPI_TOKEN}"
 }
