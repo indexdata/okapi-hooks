@@ -4,7 +4,7 @@ set -e # exit on error
 set -x # echo commands
 
 call_curl() {
-	if test -z "${CURL_TOK}"; then
+	if test -n "${CURL_TOK}"; then
 		curl -w '\n' -s ${CURL_TOK} $*
 	else
 		curl -w '\n' -s $*
@@ -28,7 +28,7 @@ login() {
 			echo "No OKAPI_TOKEN; OKAPI_USER and OKAPI_PASS required"
 			exit 1
 		fi
-        post -f -d"{\"username\":\"${OKAPI_USER}\",\"password\":\"${OKAPI_PASS}\"}" $U/authn/login
+		post -f -d"{\"username\":\"${OKAPI_USER}\",\"password\":\"${OKAPI_PASS}\"}" $U/authn/login
 		OKAPI_TOKEN=`awk '/x-okapi-token/ {print $2}' <headers|tr -d '[:space:]'`
 	fi
 	CURL_TOK="-HX-Okapi-Token:${OKAPI_TOKEN}"
