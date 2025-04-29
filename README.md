@@ -7,7 +7,7 @@ The container can be used as a
 
 | env             | Description                                 |
 |-----------------|---------------------------------------------|
-| `MD_URL`        | URL of running module instance              |
+| `MODULE_URL`    | URL of running module instance              |
 | `OKAPI_MD`      | Module descriptor content                   |
 | `OKAPI_TENANTS` | Tenants comma separated                     |
 | `OKAPI_URL`     | Okapi URL                                   |
