@@ -59,10 +59,16 @@ tenants_lookup() {
 	m=""
 	for t in `jq '.[].id' -r < $tmp `; do
 		match=false
+		for pattern in ${OKAPI_ADMIN_TENANT}; do
+			case $t in
+				${pattern})
+					match=true
+					;;
+			esac
+		done
+		$match && continue
 		for pattern in ${OKAPI_TENANTS}; do
 			case $t in
-				supertenant)
-					;;
 				${pattern})
 					match=true
 					;;
@@ -109,6 +115,7 @@ prepare() {
 		echo "Exiting"
 		exit 1
 	fi
+	OKAPI_ADMIN_TENANT=${OKAPI_ADMIN_TENANT:-supertenant}
 	SVCID=`echo $OKAPI_MD | jq -r '.id'`
 	INSTID=inst-${SVCID}
 	OKAPI_TENANTS=$(echo "$OKAPI_TENANTS" | tr ',' ' ')
