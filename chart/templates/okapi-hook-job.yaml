@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "..fullname" . }}-job
+  labels:
+    {{- include "..labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ include "..fullname" . }}-job
+      labels:
+        {{- include "..labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "..serviceAccountName" . }}
+      {{- end }}
+      restartPolicy: Never
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: okapi-hooks
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: OKAPI_URL
+            value: "{{ .Values.okapiUrl }}"
+          - name: MODULE_URL
+            value: "{{ .Values.moduleUrl }}"
+          {{- range $k, $v := .Values.env }}
+          - name: {{ $k }}
+            value: "{{ $v }}"
+          {{- end }}
+          {{- range $k, $v := .Values.envSecrets }}
+          - name: {{ $k }}
+            valueFrom:
+              secretKeyRef:
+                name: "{{ $v.name }}"
+                key: "{{ $v.key }}"
+          {{- end }}
+          - name: OKAPI_MD
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "..fullname" . }}-md
+                key: ModuleDescriptor
+          {{- range $k, $v := .Values.envConfigMaps }}
+          - name: {{ $k }}
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ $v.name }}"
+                key: "{{ $v.key }}"
+          {{- end }}
