@@ -7,7 +7,7 @@ The container can be used as a
 
 | env                  | Description                                                 |
 |----------------------|-------------------------------------------------------------|
-| `MD_URL`             | URL of running module instance                              |
+| `MODULE_URL`         | URL of running module instance                              |
 | `OKAPI_MD`           | Module descriptor content                                   |
 | `OKAPI_TENANTS`      | Glob list of tenants separated by comma or space            |
 | `OKAPI_ADMIN_TENANT` | Glob list of admin tenants - default is `supertenant`       |
