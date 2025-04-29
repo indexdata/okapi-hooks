@@ -2,6 +2,7 @@
 
 set -e # exit on error
 set -x # echo commands
+set -f # no file file glob expansion
 
 call_curl() {
 	if test -n "${CURL_TOK}"; then
@@ -52,6 +53,36 @@ hook_post_install() {
 	done
 }
 
+tenants_lookup() {
+	tmp=`mktemp`
+	call_curl -f -o $tmp $U/_/proxy/tenants
+	m=""
+	for t in `jq '.[].id' -r < $tmp `; do
+		match=false
+		for pattern in ${OKAPI_ADMIN_TENANT}; do
+			case $t in
+				${pattern})
+					match=true
+					;;
+			esac
+		done
+		$match && continue
+		for pattern in ${OKAPI_TENANTS}; do
+			case $t in
+				${pattern})
+					match=true
+					;;
+			esac
+		done
+		$match && m="$m $t"
+	done
+	if test -z "$m"; then
+		echo "No tenants matched"
+		exit 1
+	fi
+	OKAPI_TENANTS=$m
+}
+
 prepare() {
 	fail=false
 	if test -z "$OKAPI_TENANTS"; then
@@ -84,6 +115,7 @@ prepare() {
 		echo "Exiting"
 		exit 1
 	fi
+	OKAPI_ADMIN_TENANT=${OKAPI_ADMIN_TENANT:-supertenant}
 	SVCID=`echo $OKAPI_MD | jq -r '.id'`
 	INSTID=inst-${SVCID}
 	OKAPI_TENANTS=$(echo "$OKAPI_TENANTS" | tr ',' ' ')
@@ -91,6 +123,7 @@ prepare() {
 
 prepare
 login
+tenants_lookup
 
 hook_pre_delete
 hook_post_install

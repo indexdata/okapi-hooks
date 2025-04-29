@@ -20,17 +20,18 @@ export OKAPI_URL=http://localhost:9130
 export MD_URL=http://localhost:8080
 export OKAPI_TOKEN=none
 export OKAPI_MD=`cat $OKAPIHOME/okapi-test-module/target/ModuleDescriptor.json`
-export OKAPI_TENANTS="t1 t2"
+TENANTS="t1 t2"
+export OKAPI_TENANTS="*"
 
 SVCID=`echo $OKAPI_MD | jq -r '.id'`
 
-for T in ${OKAPI_TENANTS}; do
+for T in ${TENANTS}; do
 	curl -s -HContent-Type:application/json -XPOST -d "{\"id\":\"$T\"}" $OKAPI_URL/_/proxy/tenants
 done
 
 ./okapi-hooks.sh
 
-for T in ${OKAPI_TENANTS}; do
+for T in ${TENANTS}; do
 	curl -f ${OKAPI_URL}/_/proxy/tenants/$T/modules/${SVCID}
 done
 
