@@ -1,0 +1,40 @@
+# Default values for okapi-hooks.
+
+nameOverride: ""
+fullnameOverride: ""
+
+#required, Okapi base URL with scheme and port
+okapiUrl: "http://okapi:9130"
+#required, specify the module base URL with scheme and port
+moduleUrl: ""
+#required, specify the ModuleDescriptor literal (JSON)
+#example:
+#moduleDescriptor: |
+#  {{ (.Files.Get "path/to/ModuleDescriptor.json") | nindent 4 }}
+moduleDescriptor: ""
+
+# IfNotPresent: only pull the image when it doesn’t already exist on the node.
+# Always: always pull the latest version of the image from the container registry.
+# Never: there will be no attempts to pull the image.
+image:
+  repository: ghcr.io/indexdata/okapi-hooks
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  pullSecrets:
+    - name: ghcr-secret
+
+env: {}
+envSecrets: {}
+envConfigMaps: {}
+
+serviceAccount:
+  # Specifies whether a service account should be created.
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account.
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
