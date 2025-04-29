@@ -55,7 +55,7 @@ hook_post_install() {
 
 tenants_lookup() {
 	tmp=`mktemp`
-	call_curl -o $tmp $U/_/proxy/tenants
+	call_curl -f -o $tmp $U/_/proxy/tenants
 	m=""
 	for t in `jq '.[].id' -r < $tmp `; do
 		match=false
