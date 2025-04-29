@@ -29,7 +29,6 @@ for T in ${TENANTS}; do
 	curl -s -HContent-Type:application/json -XPOST -d "{\"id\":\"$T\"}" $OKAPI_URL/_/proxy/tenants
 done
 
-OKAPI_TENANTS='*'
 ./okapi-hooks.sh
 
 for T in ${TENANTS}; do
