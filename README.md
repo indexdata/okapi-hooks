@@ -9,7 +9,7 @@ The container can be used as a
 |-----------------|---------------------------------------------------------|
 | `MD_URL`        | URL of running module instance                          |
 | `OKAPI_MD`      | Module descriptor content                               |
-| `OKAPI_TENANTS` | Glob list of tenants separated by command or whitespace |
+| `OKAPI_TENANTS` | Glob list of tenants separated by comman or space       |
 | `OKAPI_URL`     | Okapi URL                                               |
 | `OKAPI_USER`    | Username for admin tenant                               |
 | `OKAPI_PASS`    | Password for admin tenant                               |
