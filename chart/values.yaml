@@ -11,6 +11,8 @@ okapiSecret: "okapi-secret"
 moduleUrl: ""
 #required, specify the ModuleDescriptor literal (JSON)
 moduleDescriptor: ""
+#required, to be replaced in the ModuleDescriptor
+moduleVersion: "0.1.0"
 #required, specify the Okapi tenant(s) to be used
 tenants: []
 #required, specify the Okapi admin tenant(s) to be used

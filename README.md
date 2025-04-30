@@ -22,6 +22,7 @@ the subchart is then configured with the following minimal values:
 
 ```yaml filename=values.yaml
 moduleUrl: "http://mod-x:80"
+moduleVersion: 0.1.0-main
 moduleDescriptor: |
   {
     "id" : "mod-x-@version@",

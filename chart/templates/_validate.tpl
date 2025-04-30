@@ -12,6 +12,9 @@
 {{- if not .Values.moduleDescriptor -}}
 {{- fail "A valid .Values.moduleDescriptor is required!" -}}
 {{- end -}}
+{{- if not .Values.moduleVersion -}}
+{{- fail "A valid .Values.moduleVersion is required!" -}}
+{{- end -}}
 {{- if empty .Values.tenants -}}
 {{- fail "A valid .Values.tenants is required!" -}}
 {{- end -}}
