@@ -3,10 +3,16 @@
 {{- if not .Values.okapiUrl -}}
 {{- fail "A valid .Values.okapiUrl is required!" -}}
 {{- end -}}
+{{- if not .Values.okapiSecret -}}
+{{- fail "A valid .Values.okapiSecret is required!" -}}
+{{- end -}}
 {{- if not .Values.moduleUrl -}}
 {{- fail "A valid .Values.moduleUrl is required!" -}}
 {{- end -}}
 {{- if not .Values.moduleDescriptor -}}
 {{- fail "A valid .Values.moduleDescriptor is required!" -}}
+{{- end -}}
+{{- if empty .Values.tenants -}}
+{{- fail "A valid .Values.tenants is required!" -}}
 {{- end -}}
 {{- end -}}

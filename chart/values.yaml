@@ -5,13 +5,18 @@ fullnameOverride: ""
 
 #required, Okapi base URL with scheme and port
 okapiUrl: "http://okapi:9130"
+#required, Okapi secret name
+okapiSecret: "okapi-secret"
 #required, specify the module base URL with scheme and port
 moduleUrl: ""
 #required, specify the ModuleDescriptor literal (JSON)
-#example:
-#moduleDescriptor: |
-#  {{ (.Files.Get "path/to/ModuleDescriptor.json") | nindent 4 }}
 moduleDescriptor: ""
+#required, specify the Okapi tenant(s) to be used
+tenants: []
+#required, specify the Okapi admin tenant(s) to be used
+supertenant: supertenant
+
+
 
 # IfNotPresent: only pull the image when it doesn’t already exist on the node.
 # Always: always pull the latest version of the image from the container registry.
