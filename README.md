@@ -1,5 +1,7 @@
 # About
 
+This project provides Okapi deployment automation when deploying Okapi modules on Kubernetes.
+
 `okapi-hooks` is a helper container for Okapi module registration (deploy + install/uninstall + undeploy)
 and a corresponding Helm chart that binds to Helm's `post-instal` and `post-upgrade`
 [lifecycle hooks](https://helm.sh/docs/topics/charts_hooks/).
@@ -18,11 +20,11 @@ dependencies:
     version: ">0.1.0-0" #or a specific version
 ```
 
-the subchart is then configured with the following minimal values:
+the subchart must be configured with the following minimal values:
 
 ```yaml filename=values.yaml
 moduleUrl: "http://mod-x:80"
-moduleVersion: 0.1.0-main
+moduleVersion: 0.1.0-main #used to replace @version@ placeholder in MD
 moduleDescriptor: |
   {
     "id" : "mod-x-@version@",
@@ -34,13 +36,15 @@ tenants:
 ```
 see [values.yaml](./chart/values.yaml) for a complete list of configuration options.
 
-The parent chart is then build with
+The parent chart is then build with:
 
 ```bash
 cd /path/to/parent/chart
 helm dependency build
 helm package .
 ```
+
+The chart expects a deployed secret called `okapi-secret` with `OKAPI_USER/OKAPI_PASS` or `OKAPI_TOKEN` keys.
 
 ## Environment variables
 

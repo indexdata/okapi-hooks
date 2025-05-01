@@ -3,19 +3,24 @@
 nameOverride: ""
 fullnameOverride: ""
 
-#required, Okapi base URL with scheme and port
-okapiUrl: "http://okapi:9130"
-#required, Okapi secret name
-okapiSecret: "okapi-secret"
-#required, specify the module base URL with scheme and port
+#REQUIRED values that must be specified by the parent chart:
+
+#Module base URL with scheme and port, NO DEFAULT
 moduleUrl: ""
-#required, specify the ModuleDescriptor literal (JSON)
+#ModuleDescriptor literal (JSON), NO DEFAULT
 moduleDescriptor: ""
-#required, to be replaced in the ModuleDescriptor
-moduleVersion: "0.1.0"
-#required, specify the Okapi tenant(s) to be used
+#Okapi tenant(s) to deploy the module to, NO DEFAULTS
 tenants: []
-#required, specify the Okapi admin tenant(s) to be used
+
+#REQUIRED values with defaults in the subchart, may be overridden by parent chart:
+
+#Used to replace @version@ in the module descriptor, must be specified only if @version@ placeholder is used
+moduleVersion: "0.1.0"
+#Okapi base URL with scheme and port
+okapiUrl: "http://okapi:9130"
+#Okapi secret name, the secret must include OKAPI_USER/OKAPI_PASS or OKAPI_TOKEN keys
+okapiSecret: "okapi-secret"
+#Okapi admin tenant
 supertenant: supertenant
 
 
