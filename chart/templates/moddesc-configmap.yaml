@@ -6,4 +6,4 @@ metadata:
     {{- include "..labels" . | nindent 4 }}
 data:
   ModuleDescriptor: |
-    {{ .Values.moduleDescriptor | default "" | replace "@version@" .Values.moduleVersion | nindent 4 }}
+    {{ .Values.moduleDescriptor | nindent 4 }}

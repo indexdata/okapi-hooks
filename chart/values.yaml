@@ -14,8 +14,6 @@ tenants: []
 
 #REQUIRED values with defaults in the subchart, may be overridden by parent chart:
 
-#Used to replace @version@ in the module descriptor, must be specified only if @version@ placeholder is used
-moduleVersion: "0.1.0"
 #Okapi base URL with scheme and port
 okapiUrl: "http://okapi:9130"
 #Okapi secret name, the secret must include OKAPI_USER/OKAPI_PASS or OKAPI_TOKEN keys

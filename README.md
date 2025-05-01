@@ -24,16 +24,17 @@ the subchart must be configured with the following minimal values:
 
 ```yaml filename=values.yaml
 moduleUrl: "http://mod-x:80"
-moduleVersion: 0.1.0-main #used to replace @version@ placeholder in MD
 moduleDescriptor: |
   {
-    "id" : "mod-x-@version@",
+    "id" : "mod-x-0.1.0",
     "name" : "X Okapi module"
   }
 tenants:
 - mytenant
 
 ```
+It's recommended that the module version in the ModuleDescriptor follows the parent chart version.
+
 see [values.yaml](./chart/values.yaml) for a complete list of configuration options.
 
 The parent chart is then build with:
