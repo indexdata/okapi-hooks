@@ -6,9 +6,9 @@ set -f # no file file glob expansion
 
 call_curl() {
 	if test -n "${CURL_TOK}"; then
-		curl -w '\n' -s ${CURL_TOK} $*
+		curl -w '\n' --show-error --silent ${CURL_TOK} $*
 	else
-		curl -w '\n' -s $*
+		curl -w '\n' --show-error --silent $*
 	fi
 }
 
