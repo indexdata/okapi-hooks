@@ -18,6 +18,7 @@ dependencies:
   - name: okapi-hooks
     repository: oci://ghcr.io/indexdata/charts
     version: ">0.1.0-0" #or a specific version
+    condition: okapi-hooks.enabled
 ```
 
 the subchart must be configured with the following minimal values:
