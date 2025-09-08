@@ -1,6 +1,6 @@
 # Default values for okapi-hooks.
 
-enabled: true
+enabled: false
 
 nameOverride: ""
 fullnameOverride: ""
