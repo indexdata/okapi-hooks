@@ -30,7 +30,7 @@ login() {
 			exit 1
 		fi
 		tmp=`mktemp`
-		post -f -D$tmp -d"{\"username\":\"${OKAPI_USER}\",\"password\":\"${OKAPI_PASS}\"}" $U/authn/login
+		post --fail-with-body -D$tmp -d"{\"username\":\"${OKAPI_USER}\",\"password\":\"${OKAPI_PASS}\"}" $U/authn/login
 		OKAPI_TOKEN=`awk '/x-okapi-token/ {print $2}' < $tmp|tr -d '[:space:]'`
 	fi
 	CURL_TOK="-HX-Okapi-Token:${OKAPI_TOKEN}"
@@ -46,16 +46,16 @@ hook_pre_delete() {
 }
 
 hook_post_install() {
-	echo $OKAPI_MD | post -f -d @- $U/_/proxy/modules
-	echo "{\"srvcId\":\"$SVCID\",\"instId\":\"${INSTID}\",\"url\":\"${MODULE_URL}\"}" | post -f -d @- $U/_/discovery/modules
+	echo $OKAPI_MD | post --fail-with-body -d @- $U/_/proxy/modules
+	echo "{\"srvcId\":\"$SVCID\",\"instId\":\"${INSTID}\",\"url\":\"${MODULE_URL}\"}" | post --fail-with-body -d @- $U/_/discovery/modules
 	for T in $OKAPI_TENANTS; do
-		echo "[{ \"id\":\"${SVCID}\",\"action\":\"enable\"}]" | post -f -d @- $U/_/proxy/tenants/$T/install
+		echo "[{ \"id\":\"${SVCID}\",\"action\":\"enable\"}]" | post --fail-with-body -d @- $U/_/proxy/tenants/$T/install
 	done
 }
 
 tenants_lookup() {
 	tmp=`mktemp`
-	call_curl -f -o $tmp $U/_/proxy/tenants
+	call_curl --fail-with-body -o $tmp $U/_/proxy/tenants
 	m=""
 	for t in `jq '.[].id' -r < $tmp `; do
 		match=false
