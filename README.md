@@ -21,9 +21,10 @@ dependencies:
     condition: okapi-hooks.enabled
 ```
 
-the subchart must be configured with the following minimal values:
+the subchart must be configured with the following minimal values, note that the chart is disabled by default:
 
 ```yaml filename=values.yaml
+enabled: true
 moduleUrl: "http://mod-x:80"
 moduleDescriptor: |
   {
