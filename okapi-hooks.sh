@@ -38,9 +38,11 @@ login() {
 
 # TODO: handle that previous instance is a different version
 hook_pre_delete() {
-	for T in $OKAPI_TENANTS; do
-		echo "[{\"id\":\"${SVCID}\",\"action\":\"disable\"}]" | post -d @- $U/_/proxy/tenants/$T/install
-	done
+  if test -n "${OKAPI_TENANTS}"; then
+	  for T in $OKAPI_TENANTS; do
+		  echo "[{\"id\":\"${SVCID}\",\"action\":\"disable\"}]" | post -d @- $U/_/proxy/tenants/$T/install
+	  done
+  fi
 	delete "$U/_/discovery/modules/${SVCID}/${INSTID}"
 	delete "$U/_/proxy/modules/${SVCID}"
 }
@@ -48,9 +50,11 @@ hook_pre_delete() {
 hook_post_install() {
 	echo $OKAPI_MD | post --fail-with-body -d @- $U/_/proxy/modules
 	echo "{\"srvcId\":\"$SVCID\",\"instId\":\"${INSTID}\",\"url\":\"${MODULE_URL}\"}" | post --fail-with-body -d @- $U/_/discovery/modules
-	for T in $OKAPI_TENANTS; do
-		echo "[{ \"id\":\"${SVCID}\",\"action\":\"enable\"}]" | post --fail-with-body -d @- $U/_/proxy/tenants/$T/install
-	done
+  if test -n "${OKAPI_TENANTS}"; then
+	  for T in $OKAPI_TENANTS; do
+		  echo "[{ \"id\":\"${SVCID}\",\"action\":\"enable\"}]" | post --fail-with-body -d @- $U/_/proxy/tenants/$T/install
+	  done
+  fi
 }
 
 tenants_lookup() {
@@ -86,8 +90,7 @@ tenants_lookup() {
 prepare() {
 	fail=false
 	if test -z "$OKAPI_TENANTS"; then
-		echo "OKAPI_TENANTS not set"
-		fail=true
+		echo "OKAPI_TENANTS not set, will deploy only (no enablement)"
 	fi
 	if test -z "$OKAPI_URL"; then
 		echo "OKAPI_URL not set"
@@ -118,12 +121,16 @@ prepare() {
 	OKAPI_ADMIN_TENANT=${OKAPI_ADMIN_TENANT:-supertenant}
 	SVCID=`echo $OKAPI_MD | jq -r '.id'`
 	INSTID=inst-${SVCID}
-	OKAPI_TENANTS=$(echo "$OKAPI_TENANTS" | tr ',' ' ')
+  if test -n "${OKAPI_TENANTS}"; then
+	  OKAPI_TENANTS=$(echo "$OKAPI_TENANTS" | tr ',' ' ')
+  fi
 }
 
 prepare
 login
-tenants_lookup
+if test -n "${OKAPI_TENANTS}"; then
+  tenants_lookup
+fi
 
 hook_pre_delete
 hook_post_install

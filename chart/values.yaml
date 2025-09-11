@@ -12,6 +12,8 @@ moduleUrl: ""
 #ModuleDescriptor literal (JSON), NO DEFAULT
 moduleDescriptor: ""
 #Okapi tenant(s) to deploy the module to, NO DEFAULTS
+#If list is empty or undefined, module will be registered and deployed but
+#not enabled for any tenant
 tenants: []
 
 #REQUIRED values with defaults in the subchart, may be overridden by parent chart:

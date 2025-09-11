@@ -2,9 +2,12 @@
 
 This project provides Okapi deployment automation when deploying Okapi modules on Kubernetes.
 
-`okapi-hooks` is a helper container for Okapi module registration (deploy + install/uninstall + undeploy)
+`okapi-hooks` is a helper container for Okapi module registration (deploy + optional install/uninstall + undeploy)
 and a corresponding Helm chart that binds to Helm's `post-instal` and `post-upgrade`
 [lifecycle hooks](https://helm.sh/docs/topics/charts_hooks/).
+
+If a list of Okapi tenants is provided, the module will be enabled (installed)
+for each tenant in the list.
 
 While the container and the chart can be used independently, the intended use is as a subchart dependency
 in a parent Okapi module Helm chart, like so:
@@ -31,15 +34,13 @@ moduleDescriptor: |
     "id" : "mod-x-0.1.0",
     "name" : "X Okapi module"
   }
-tenants:
-- mytenant
-
 ```
+
 It's recommended that the module version in the ModuleDescriptor follows the parent chart version.
 
 see [values.yaml](./chart/values.yaml) for a complete list of configuration options.
 
-The parent chart is then build with:
+The parent chart is then built with:
 
 ```bash
 cd /path/to/parent/chart
