@@ -33,7 +33,7 @@ spec:
           - name: MODULE_URL
             value: "{{ .Values.moduleUrl }}"
           - name: OKAPI_TENANTS
-            value: "{{ join "," .Values.tenants | default([]) }}"
+            value: "{{ join "," .Values.tenants | default [] }}"
           - name: OKAPI_ADMIN_TENANT
             value: "{{ join "," .Values.supertenant }}"
           {{- range $k, $v := .Values.env }}
