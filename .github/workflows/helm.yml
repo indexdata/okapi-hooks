@@ -25,7 +25,7 @@ jobs:
             chart_version: "0.1.0-main.${{ github.run_number }}"
             chart_path: chart
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: helm lint
         run: |
           helm lint ${{ matrix.chart_path }}
